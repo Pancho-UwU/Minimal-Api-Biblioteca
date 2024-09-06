@@ -14,6 +14,5 @@ public class Libro
 
     public Genero genero{get;set;}
     
-    public ICollection<LibroBibliotecaria> LibroBibliotecarias { get; set; }
 
 }

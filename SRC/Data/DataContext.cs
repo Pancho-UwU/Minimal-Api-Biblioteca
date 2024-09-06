@@ -6,17 +6,13 @@ public class DataContext:DbContext
     {
     }
     
-    public DbSet<Bibliotecaria> bibliotecarias {get;set;}
+    public DbSet<Bibliotecaria> bibliotecaria {get;set;}
 
-    public DbSet<Genero> generos {get;set;}
+    public DbSet<Genero> genero {get;set;}
 
-    public DbSet<LibroBibliotecaria> libroBibliotecarias {get;set;}
-
-    public DbSet<Profesor> profesors {get;set;}
-    
-    public DbSet<Alumno> alumnos {get;set;}
-
-    public DbSet<Libro> libros {get;set;}
+    public DbSet<LibroBibliotecaria> libroBibliotecaria {get;set;}
+    public DbSet<Usuario> Usuario {get;set;}
+    public DbSet<Libro> libro {get;set;}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     // Configura la tabla de unión para la relación muchos a muchos
@@ -25,7 +21,7 @@ public class DataContext:DbContext
 
     modelBuilder.Entity<LibroBibliotecaria>()
         .HasOne(lb => lb.libro)
-        .WithMany(l => l.LibroBibliotecarias) // Asegúrate de tener esta colección en Libro
+        .WithMany() // Asegúrate de tener esta colección en Libro
         .HasForeignKey(lb => lb.LibroId);
 
     modelBuilder.Entity<LibroBibliotecaria>()
@@ -48,7 +44,7 @@ public class DataContext:DbContext
     // Configura la relación entre Libro y Genero
     modelBuilder.Entity<Libro>()
         .HasOne(l => l.genero)
-        .WithMany(g => g.librosC) // Asegúrate de tener esta colección en Genero
+        .WithMany() // Asegúrate de tener esta colección en Genero
         .HasForeignKey(l => l.GeneroId);
 
     modelBuilder.Entity<Genero>()
@@ -57,21 +53,7 @@ public class DataContext:DbContext
     modelBuilder.Entity<Usuario>()
         .HasKey(u => u.id);
 
-    modelBuilder.Entity<Alumno>()
-        .HasKey(a => a.id);
-
-    modelBuilder.Entity<Profesor>()
-        .HasKey(p => p.id);
-
-    modelBuilder.Entity<Alumno>()
-        .HasOne(a => a.usuario)
-        .WithMany(u => u.alumnosC) // Asegúrate de tener esta colección en Usuario
-        .HasForeignKey(a => a.idUsuario);
-
-    modelBuilder.Entity<Profesor>()
-        .HasOne(p => p.usuario)
-        .WithMany(u => u.Profesors) // Asegúrate de tener esta colección en Usuario
-        .HasForeignKey(p => p.usuarioId);
+ 
 }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -4,7 +4,6 @@ public class Genero
 
     public string name{get;set;}
 
-    public ICollection<Libro> librosC {get;set;}
     
     
 }

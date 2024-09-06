@@ -7,7 +7,6 @@ public class LibroBibliotecaria
     public int BibliotecariaId{get;set;}
     public Bibliotecaria bibliotecaria{get;set;}
 
-
     public int userId{get;set;}
     public Usuario usuario {get;set;}
     

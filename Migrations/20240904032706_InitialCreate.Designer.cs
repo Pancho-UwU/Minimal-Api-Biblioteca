@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MinimalApiTest.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240902062413_InitialCreate")]
+    [Migration("20240904032706_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -23,28 +23,6 @@ namespace MinimalApiTest.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("Alumno", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("Course")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("idUsuario")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("idUsuario");
-
-                    b.ToTable("alumnos");
-                });
 
             modelBuilder.Entity("Bibliotecaria", b =>
                 {
@@ -75,7 +53,7 @@ namespace MinimalApiTest.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("bibliotecarias");
+                    b.ToTable("bibliotecaria");
                 });
 
             modelBuilder.Entity("Genero", b =>
@@ -92,7 +70,7 @@ namespace MinimalApiTest.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("generos");
+                    b.ToTable("genero");
                 });
 
             modelBuilder.Entity("Libro", b =>
@@ -121,7 +99,7 @@ namespace MinimalApiTest.Migrations
 
                     b.HasIndex("GeneroId");
 
-                    b.ToTable("libros");
+                    b.ToTable("libro");
                 });
 
             modelBuilder.Entity("LibroBibliotecaria", b =>
@@ -141,25 +119,7 @@ namespace MinimalApiTest.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("libroBibliotecarias");
-                });
-
-            modelBuilder.Entity("Profesor", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("usuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("usuarioId");
-
-                    b.ToTable("profesors");
+                    b.ToTable("libroBibliotecaria");
                 });
 
             modelBuilder.Entity("Usuario", b =>
@@ -174,32 +134,33 @@ namespace MinimalApiTest.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("date_deliver")
+                    b.Property<int?>("cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("date_deliver")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("date_return")
+                    b.Property<DateTime?>("date_return")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("is_Student")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("is_Teacher")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("quantity")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
                     b.ToTable("Usuario");
                 });
 
-            modelBuilder.Entity("Alumno", b =>
-                {
-                    b.HasOne("Usuario", "usuario")
-                        .WithMany("alumnosC")
-                        .HasForeignKey("idUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("usuario");
-                });
-
             modelBuilder.Entity("Libro", b =>
                 {
                     b.HasOne("Genero", "genero")
-                        .WithMany("librosC")
+                        .WithMany()
                         .HasForeignKey("GeneroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -216,7 +177,7 @@ namespace MinimalApiTest.Migrations
                         .IsRequired();
 
                     b.HasOne("Libro", "libro")
-                        .WithMany("LibroBibliotecarias")
+                        .WithMany()
                         .HasForeignKey("LibroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -234,37 +195,9 @@ namespace MinimalApiTest.Migrations
                     b.Navigation("usuario");
                 });
 
-            modelBuilder.Entity("Profesor", b =>
-                {
-                    b.HasOne("Usuario", "usuario")
-                        .WithMany("Profesors")
-                        .HasForeignKey("usuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("usuario");
-                });
-
             modelBuilder.Entity("Bibliotecaria", b =>
                 {
                     b.Navigation("LibroBibliotecarias");
-                });
-
-            modelBuilder.Entity("Genero", b =>
-                {
-                    b.Navigation("librosC");
-                });
-
-            modelBuilder.Entity("Libro", b =>
-                {
-                    b.Navigation("LibroBibliotecarias");
-                });
-
-            modelBuilder.Entity("Usuario", b =>
-                {
-                    b.Navigation("Profesors");
-
-                    b.Navigation("alumnosC");
                 });
 #pragma warning restore 612, 618
         }
